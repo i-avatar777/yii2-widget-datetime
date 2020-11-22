@@ -205,5 +205,31 @@ class DateTime extends \yii\jui\InputWidget
         return $div;
     }
 
+    public function onAfterLoad($field)
+    {
+        $dateFormat = ArrayHelper::getValue($field, 'dateFormat', 'php:d.m.Y');
+        if (strncmp($dateFormat, 'php:', 4) === 0) {
+            $dateFormat = substr($dateFormat, 4);
+        } else {
+            $dateFormat = FormatConverter::convertDateIcuToPhp($dateFormat);
+        }
 
+        $model = $this->model;
+        $attribute = $this->attribute;
+        $model->$attribute = \DateTime::createFromFormat($dateFormat, $model->$attribute);
+    }
+
+    public function onAfterLoadDb($field)
+    {
+        $model = $this->model;
+        $attribute = $this->attribute;
+        $model->$attribute = new DateTime($model->$attribute);
+    }
+
+    public function onBeforeUpdate($field)
+    {
+        $model = $this->model;
+        $attribute = $this->attribute;
+        $model->$attribute = $this->attribute->format('Y-m-d');
+    }
 }
