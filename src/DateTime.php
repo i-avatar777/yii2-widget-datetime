@@ -21,6 +21,8 @@ use yii\imagine\Image;
 use Imagine\Image\ManipulatorInterface;
 use cs\base\BaseForm;
 use cs\services\UploadFolderDispatcher;
+use \yii\helpers\FormatConverter;
+use \yii\jui\JuiAsset;
 
 /**
  * Используется для загрузки картинок в облако, обрезки, маркировки
