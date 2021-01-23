@@ -216,7 +216,13 @@ class DateTime extends \yii\jui\InputWidget
 
         $model = $this->model;
         $attribute = $this->attribute;
-        $model->$attribute = \DateTime::createFromFormat($dateFormat, $model->$attribute);
+        $v = \DateTime::createFromFormat($dateFormat, $model->$attribute);
+        if ($v === false) {
+            $f = FormatConverter::convertDatePhpToIcu($dateFormat);
+            $model->addError($attribute, 'Не верный формат. Должен быть: ' . $f);
+        } else {
+            $model->$attribute = $v;
+        }
     }
 
     public function onAfterLoadDb($field)
