@@ -229,21 +229,28 @@ class DateTime extends \yii\jui\InputWidget
     {
         $model = $this->model;
         $attribute = $this->attribute;
-        $model->$attribute = new \DateTime($model->$attribute);
+        if ($model->$attribute) {
+            $model->$attribute = new \DateTime($model->$attribute);
+        }
     }
 
     public function onBeforeInsert($field)
     {
         $model = $this->model;
         $attribute = $this->attribute;
-        $v = $model->$attribute->format('Y-m-d');
-        $model->$attribute = $v;
+        $value = $model->$attribute;
+        if ($value) {
+            $model->$attribute = $value->format('Y-m-d');
+        }
     }
 
     public function onBeforeUpdate($field)
     {
         $model = $this->model;
         $attribute = $this->attribute;
-        $model->$attribute = $model->$attribute->format('Y-m-d');
+        $value = $model->$attribute;
+        if ($value) {
+            $model->$attribute = $value->format('Y-m-d');
+        }
     }
 }
